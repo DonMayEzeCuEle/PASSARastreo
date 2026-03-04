@@ -24,7 +24,7 @@
 </head>
 <body class="bg-gray-100 font-sans overflow-hidden">
 
-    <div class="relative h-screen w-full flex flex-col justify-between max-w-md mx-auto shadow-2xl bg-white">
+    <div class="relative h-[100dvh] w-full flex flex-col justify-between max-w-md mx-auto shadow-2xl bg-white">
         
         <div class="flotante absolute top-0 w-full p-4 flex justify-between items-center pointer-events-none">
             <a href="lista_pedidos.html" class="bg-white/90 backdrop-blur-md w-12 h-12 flex justify-center items-center rounded-full shadow-md text-gray-800 pointer-events-auto hover:bg-gray-100 active:scale-90 transition-all duration-200">
@@ -40,7 +40,7 @@
 
         <div id="mapa" class="absolute inset-0 w-full h-full"></div>
 
-        <div class="flotante w-full mt-auto bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] p-6 pb-10">
+        <div class="flotante w-full mt-auto bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] p-6 pb-12">
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Entrega #1024</p>
@@ -57,14 +57,14 @@
 
             <button 
                 onclick="abrirEvidencia()"
-                class="w-full text-white bg-blue-600 hover:bg-blue-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-blue-500/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98]">
+                class="w-full text-white bg-blue-600 hover:bg-blue-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-blue-500/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98] mb-2">
                 <i class="fa-solid fa-location-crosshairs text-xl mr-2"></i> Validar Ubicación
             </button>
         </div>
 
         <div id="modal-evidencia" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end backdrop-blur-sm transition-opacity">
             
-            <div class="bg-white w-full max-w-md mx-auto rounded-t-[2rem] p-6 pb-8 slide-up">
+            <div class="bg-white w-full max-w-md mx-auto rounded-t-[2rem] p-6 pb-12 slide-up">
                 
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-xl font-bold text-gray-800">Evidencia de Entrega</h3>
@@ -91,7 +91,7 @@
                 <p class="text-sm text-gray-500 font-semibold mb-2">2. Notas adicionales (Opcional)</p>
                 <textarea rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition mb-6" placeholder="Ej. Se dejó en recepción con el guardia de turno..."></textarea>
 
-                <button onclick="finalizarEntrega()" class="w-full text-white bg-green-600 hover:bg-green-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-green-600/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98]">
+                <button onclick="finalizarEntrega()" class="w-full text-white bg-green-600 hover:bg-green-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-green-600/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98] mb-2">
                     <i class="fa-solid fa-paper-plane mr-2"></i> Enviar y Finalizar
                 </button>
             </div>
