@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PASSA Rastreo - Iniciar Sesión</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#f8faf7] font-sans min-h-screen flex items-center justify-center p-4 selection:bg-[#6b9e1a] selection:text-white"> 
+    <div class="w-full max-w-md bg-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden border border-gray-100">
+        
+        <div class="absolute -top-20 -right-20 w-48 h-48 bg-[#6b9e1a] rounded-full blur-3xl opacity-20 pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-[#ffcc00] rounded-full blur-2xl opacity-20 pointer-events-none"></div>
+
+        <div class="text-center mb-10 relative z-10 mt-4">
+            <div class="w-40 mx-auto mb-4 flex justify-center items-center drop-shadow-md">
+                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA Agroservicios" class="w-full h-auto object-contain">
+            </div>
+            
+            <h1 class="text-3xl font-extrabold text-[#001b71] tracking-tight">PASSA <span class="text-[#6b9e1a]">Rastreo</span></h1>
+            <p class="text-gray-500 font-medium mt-2 text-sm">Logística y entrega de insumos agrícolas.</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5 relative z-10">
+            
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Correo Electrónico</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-envelope text-gray-400"></i>
+                    </div>
+                    <input type="email" required placeholder="user@passa.com.mx" 
+                           class="w-full pl-11 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:border-[#6b9e1a] focus:ring-2 focus:ring-[#6b9e1a]/20 transition-all">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2 ml-1">Contraseña</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock text-gray-400"></i>
+                    </div>
+                    <input type="password" required placeholder="••••••••" 
+                           class="w-full pl-11 pr-12 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:border-[#6b9e1a] focus:ring-2 focus:ring-[#6b9e1a]/20 transition-all">
+                    
+                    <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#001b71] transition-colors">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-1">
+                <a href="#" class="text-sm font-bold text-[#6b9e1a] hover:text-[#001b71] transition-colors">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" id="btnSubmit" 
+                    class="w-full text-white bg-[#001b71] hover:bg-[#001250] font-bold py-4 px-6 rounded-2xl shadow-lg shadow-[#001b71]/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98] mt-4">
+                <span id="btnText">Iniciar Sesión</span>
+                <i id="btnIcon" class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                <i id="btnSpinner" class="fa-solid fa-circle-notch fa-spin ml-2 hidden"></i>
+            </button>
+            <button type="button" onclick="modoAdmin()"
+                    class="w-full text-white bg-[#001b71] hover:bg-[#001250] font-bold py-4 px-6 rounded-2xl shadow-lg shadow-[#001b71]/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98] mt-4">
+                <span id="btnText">Admin</span>
+                <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                <i class="fa-solid fa-circle-notch fa-spin ml-2 hidden"></i>
+            </button>
+        </form>
+
+        <div class="mt-10 text-center relative z-10">
+            <p class="text-xs text-gray-400 font-medium">Agroservicios PASSA &copy; 2026</p>
+        </div>
+
+    </div>
+
+    <script>
+        function modoAdmin() {
+            window.location.href = 'admin_dashboard.html';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const btn = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnSpinner = document.getElementById('btnSpinner');
+            
+
+            // Estado de carga (Se pone Verde Hoja al cargar)
+            btn.classList.add('bg-[#6b9e1a]', 'cursor-not-allowed', 'shadow-none');
+            btn.classList.remove('bg-[#001b71]', 'hover:bg-[#001250]', 'shadow-[#001b71]/30');
+            btnText.innerText = 'Verificando datos...';
+            btnIcon.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+
+            setTimeout(() => {
+                window.location.href = 'lista_pedidos.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

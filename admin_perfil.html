@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASSA Rastreo - Mi Perfil Aislado</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#f8faf7] font-sans min-h-screen flex flex-col items-center justify-center relative selection:bg-[#6b9e1a] selection:text-white">
+
+    <header class="absolute top-0 w-full p-6 flex justify-between items-center z-10 max-w-6xl mx-auto">
+        
+        <a href="admin_dashboard.html" class="flex items-center gap-2 text-gray-600 hover:text-[#001b71] font-bold transition bg-white/80 backdrop-blur-md px-5 py-2.5 rounded-xl shadow-sm border border-gray-200 hover:border-[#001b71]/30 active:scale-95">
+            <i class="fa-solid fa-arrow-left"></i> Volver al Panel
+        </a>
+
+        <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-10 object-contain drop-shadow-sm hidden sm:block">
+        
+        <div class="w-32 hidden sm:block"></div>
+    </header>
+
+    <main class="w-full max-w-3xl px-4 mt-20 sm:mt-0 animate-[fadeIn_0.4s_ease-out]">
+        
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-[#001b71] tracking-tight">Configuración de Cuenta</h2>
+            <p class="text-gray-500 text-sm mt-2">Gestiona tu información y tu sesión administrativa.</p>
+        </div>
+
+        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden relative">
+            
+            <div class="h-40 bg-[#001b71] relative overflow-hidden flex justify-center">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-[#6b9e1a] rounded-full blur-3xl opacity-30"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-white rounded-full blur-2xl opacity-10"></div>
+            </div>
+
+            <div class="px-8 pb-8 relative text-center sm:text-left">
+                
+                <div class="flex flex-col sm:flex-row items-center sm:items-end justify-between -mt-16 sm:-mt-12 mb-8 gap-4">
+                    
+                    <div class="flex flex-col sm:flex-row items-center sm:items-end gap-6">
+                        <div class="w-32 h-32 bg-gray-100 rounded-full border-4 border-white shadow-lg flex items-center justify-center text-4xl font-bold text-[#001b71] relative z-10">
+                            JA
+                            <div class="absolute bottom-2 right-2 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
+                        </div>
+
+                        <div class="pb-2 text-center sm:text-left">
+                            <h3 class="text-3xl font-bold text-gray-800">Jose Angel</h3>
+                            <p class="text-[#6b9e1a] font-bold text-sm uppercase tracking-wide mt-1">Administrador PASSA</p>
+                        </div>
+                    </div>
+
+                    <span class="bg-green-50 text-green-700 px-4 py-2 rounded-xl text-xs font-bold border border-green-200 mb-2 sm:mb-0">
+                        <i class="fa-solid fa-shield-check mr-1"></i> Accesos Completos
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-8">
+                    <div class="bg-[#f8faf7] p-5 rounded-2xl border border-gray-100">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Correo Electrónico</p>
+                        <p class="text-gray-800 font-semibold flex items-center"><i class="fa-solid fa-envelope text-gray-400 mr-3 text-lg"></i> admin@passa.com.mx</p>
+                    </div>
+                    <div class="bg-[#f8faf7] p-5 rounded-2xl border border-gray-100">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Teléfono Asignado</p>
+                        <p class="text-gray-800 font-semibold flex items-center"><i class="fa-solid fa-phone text-gray-400 mr-3 text-lg"></i> +52 669 123 4567</p>
+                    </div>
+                    <div class="bg-[#f8faf7] p-5 rounded-2xl border border-gray-100">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Rol del Sistema</p>
+                        <p class="text-gray-800 font-semibold flex items-center"><i class="fa-solid fa-database text-gray-400 mr-3 text-lg"></i> Administrador</p>
+                    </div>
+                    <div class="bg-[#f8faf7] p-5 rounded-2xl border border-gray-100 flex flex-col justify-center items-start">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Seguridad</p>
+                        <button class="text-[#001b71] font-bold hover:underline flex items-center transition-colors"><i class="fa-solid fa-lock mr-2"></i> Cambiar contraseña</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 border-t border-gray-100 p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-gray-400 font-medium text-center sm:text-left">
+                    Último acceso: <span class="font-bold text-gray-500">Hoy a las 08:30 AM</span>
+                </p>
+                <button onclick="abrirModalAdmin()" class="w-full sm:w-auto bg-white text-red-600 hover:bg-red-500 hover:text-white border-2 border-red-100 hover:border-red-500 px-8 py-3.5 rounded-xl font-bold shadow-sm transition-all flex items-center justify-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal-logout-admin" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center backdrop-blur-md transition-opacity opacity-0 duration-300">
+        <div id="modal-content-admin" class="bg-white w-full max-w-md mx-4 rounded-3xl p-8 shadow-2xl scale-95 transition-transform duration-300 border border-gray-100">
+            
+            <div class="flex items-start justify-between mb-6">
+                <div class="w-14 h-14 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl border border-red-100 shadow-inner">
+                    <i class="fa-solid fa-power-off"></i>
+                </div>
+                <button onclick="cerrarModalAdmin()" class="text-gray-400 hover:text-gray-800 bg-gray-50 hover:bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-gray-800 mb-3 tracking-tight">¿Cerrar Sesión?</h3>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">
+                Estás a punto de salir del sistema administrativo. Asegúrate de haber guardado cualquier cambio en las rutas.
+            </p>
+            
+            <div class="flex gap-3 justify-end">
+                <button onclick="cerrarModalAdmin()" class="flex-1 px-5 py-3.5 text-gray-700 bg-gray-100 font-bold rounded-xl hover:bg-gray-200 transition-colors active:scale-95">
+                    Cancelar
+                </button>
+                <a href="index.html" class="flex-1 px-5 py-3.5 bg-red-500 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 hover:bg-red-600 transition-colors text-center active:scale-95">
+                    Sí, salir
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modalAdmin = document.getElementById('modal-logout-admin');
+        const modalContentAdmin = document.getElementById('modal-content-admin');
+
+        function abrirModalAdmin() {
+            modalAdmin.classList.remove('hidden');
+            modalAdmin.classList.add('flex');
+            // Timeout pequeño para que la transición CSS tenga efecto
+            setTimeout(() => {
+                modalAdmin.classList.remove('opacity-0');
+                modalContentAdmin.classList.remove('scale-95');
+                modalContentAdmin.classList.add('scale-100');
+            }, 10);
+        }
+
+        function cerrarModalAdmin() {
+            modalAdmin.classList.add('opacity-0');
+            modalContentAdmin.classList.remove('scale-100');
+            modalContentAdmin.classList.add('scale-95');
+            setTimeout(() => {
+                modalAdmin.classList.add('hidden');
+                modalAdmin.classList.remove('flex');
+            }, 300);
+        }
+    </script>
+</body>
+</html>

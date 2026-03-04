@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASSA Rastreo - Panel de Control</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#f8faf7] font-sans overflow-hidden selection:bg-[#6b9e1a] selection:text-white">
+
+    <div class="flex h-screen w-full">
+
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
+            
+            <div class="h-20 flex items-center justify-center border-b border-gray-100 px-6">
+                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-10 object-contain drop-shadow-sm">
+            </div>
+
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-2">Principal</p>
+                
+                <button id="nav-dashboard" onclick="cambiarVista('dashboard')" class="w-full flex items-center gap-3 bg-[#001b71]/10 text-[#001b71] px-4 py-3 rounded-xl font-bold transition-colors border border-[#001b71]/10">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
+                </button>
+                
+                <button id="nav-pedidos" onclick="cambiarVista('pedidos')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-box w-5 text-center"></i> Pedidos
+                </button>
+                
+                <button id="nav-repartidores" onclick="cambiarVista('repartidores')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-motorcycle w-5 text-center"></i> Repartidores
+                </button>
+                
+                <button id="nav-clientes" onclick="cambiarVista('clientes')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-users w-5 text-center"></i> Clientes
+                </button>
+
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-6">Administración</p>
+                
+                <button class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-file-invoice w-5 text-center"></i> Reportes
+                </button>
+                <button class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-gear w-5 text-center"></i> Configuración
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <div class="flex items-center gap-3 px-2 py-2 cursor-pointer hover:bg-gray-50 rounded-xl transition" onclick="perfilAdmin()">
+                    <div class="w-10 h-10 rounded-full bg-[#001b71] text-white flex items-center justify-center font-bold shadow-sm">AD</div>
+                    <div class="text-left">
+                        <p class="text-sm font-bold text-gray-800">Admin PASSA</p>
+                        <p class="text-xs text-gray-500">Gerencia Logística</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <header class="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-8 z-10">
+                <div class="relative w-96">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="text" placeholder="Buscar..." class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#6b9e1a] focus:ring-1 focus:ring-[#6b9e1a] transition-all">
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 flex items-center justify-center transition border border-gray-200 relative">
+                        <i class="fa-regular fa-bell"></i><span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="bg-[#6b9e1a] hover:bg-[#5a8516] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-[#6b9e1a]/30 transition-all flex items-center gap-2 active:scale-95">
+                        <i class="fa-solid fa-plus"></i> Nuevo Pedido
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-8 relative">
+                
+                <div id="vista-dashboard" class="block animate-[fadeIn_0.3s_ease-in-out]">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800">Resumen Operativo</h2>
+                        <p class="text-gray-500 text-sm mt-1">Monitoreo en tiempo real de entregas e insumos.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
+                            <div><p class="text-sm font-semibold text-gray-500 mb-1">Pedidos Hoy</p><p class="text-3xl font-bold text-gray-800">42</p></div>
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#001b71] flex items-center justify-center text-xl"><i class="fa-solid fa-box"></i></div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
+                            <div><p class="text-sm font-semibold text-gray-500 mb-1">En Ruta</p><p class="text-3xl font-bold text-gray-800">8</p></div>
+                            <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl"><i class="fa-solid fa-motorcycle"></i></div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
+                            <div><p class="text-sm font-semibold text-gray-500 mb-1">Entregados</p><p class="text-3xl font-bold text-gray-800">29</p></div>
+                            <div class="w-12 h-12 rounded-xl bg-green-50 text-[#6b9e1a] flex items-center justify-center text-xl"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
+                            <div><p class="text-sm font-semibold text-gray-500 mb-1">Excepciones</p><p class="text-3xl font-bold text-gray-800">5</p></div>
+                            <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                                <h3 class="font-bold text-gray-800"><i class="fa-solid fa-map-location-dot text-[#001b71] mr-2"></i> Mapa de Operaciones</h3>
+                                <span class="flex items-center text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full"><span class="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span> En Vivo</span>
+                            </div>
+                            <div id="mapa-admin" class="w-full h-[400px] bg-gray-200 z-0"></div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                                <h3 class="font-bold text-gray-800">Actividad Reciente</h3>
+                                <button class="text-[#001b71] text-sm font-bold hover:underline">Ver todo</button>
+                            </div>
+                            <div class="p-0 overflow-y-auto h-[400px]">
+                                <div class="px-6 py-4 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                    <div class="flex justify-between items-start mb-1"><span class="font-bold text-gray-800">#1024</span><span class="bg-[#ffcc00]/20 text-[#997a00] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">En Camino</span></div>
+                                    <p class="text-sm font-semibold text-gray-700">Ana Lizárraga</p>
+                                    <p class="text-xs text-gray-500 mt-1">Repartidor: Jose Angel</p>
+                                </div>
+                                <div class="px-6 py-4 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer">
+                                    <div class="flex justify-between items-start mb-1"><span class="font-bold text-gray-800">#1021</span><span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Entregado</span></div>
+                                    <p class="text-sm font-semibold text-gray-700">María López</p>
+                                    <p class="text-xs text-gray-500 mt-1">Repartidor: Carlos M.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vista-pedidos" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
+                    <div class="mb-6 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Gestión de Pedidos</h2>
+                            <p class="text-gray-500 text-sm mt-1">Listado histórico y activo de todas las rutas.</p>
+                        </div>
+                        <button class="bg-white border border-gray-200 text-gray-600 px-4 py-2 rounded-xl font-bold text-sm shadow-sm hover:bg-gray-50"><i class="fa-solid fa-filter mr-2"></i> Filtros</button>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead class="bg-gray-50 text-gray-700 uppercase font-bold text-xs border-b border-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4">ID Pedido</th>
+                                    <th class="px-6 py-4">Cliente</th>
+                                    <th class="px-6 py-4">Dirección</th>
+                                    <th class="px-6 py-4">Repartidor</th>
+                                    <th class="px-6 py-4">Estado</th>
+                                    <th class="px-6 py-4 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold text-gray-800">#1024</td>
+                                    <td class="px-6 py-4 font-semibold">Ana Lizárraga</td>
+                                    <td class="px-6 py-4 text-xs">Av. Sábalo Cerritos</td>
+                                    <td class="px-6 py-4">Jose Angel</td>
+                                    <td class="px-6 py-4"><span class="bg-[#ffcc00]/20 text-[#997a00] font-bold px-3 py-1 rounded-full text-[10px] uppercase">En camino</span></td>
+                                    <td class="px-6 py-4 text-center"><button class="text-[#001b71] hover:underline font-bold"><i class="fa-solid fa-eye"></i></button></td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold text-gray-800">#1025</td>
+                                    <td class="px-6 py-4 font-semibold">Roberto Gómez</td>
+                                    <td class="px-6 py-4 text-xs">Juan Carrasco 89</td>
+                                    <td class="px-6 py-4">Sin asignar</td>
+                                    <td class="px-6 py-4"><span class="bg-gray-100 text-gray-600 font-bold px-3 py-1 rounded-full text-[10px] uppercase">Pendiente</span></td>
+                                    <td class="px-6 py-4 text-center"><button class="text-[#001b71] hover:underline font-bold"><i class="fa-solid fa-eye"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="vista-repartidores" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
+                    <div class="mb-6 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Directorio de Repartidores</h2>
+                            <p class="text-gray-500 text-sm mt-1">Control de personal y vehículos asignados.</p>
+                        </div>
+                        <button class="bg-[#001b71] text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md hover:bg-[#001250]"><i class="fa-solid fa-user-plus mr-2"></i> Agregar Repartidor</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center relative overflow-hidden">
+                            <div class="absolute top-4 right-4 w-3 h-3 bg-[#6b9e1a] rounded-full shadow-[0_0_8px_rgba(107,158,26,0.6)]"></div>
+                            <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-3 border-4 border-white shadow-sm overflow-hidden"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Josea" class="w-full"></div>
+                            <h3 class="text-lg font-bold text-gray-800">Jose Angel</h3>
+                            <p class="text-xs text-gray-500 mb-4"><i class="fa-solid fa-phone mr-1"></i> 669 123 4567</p>
+                            <div class="bg-blue-50 text-[#001b71] py-2 px-4 rounded-xl text-xs font-bold"><i class="fa-solid fa-motorcycle mr-2"></i> Honda Cargo (VFG-912)</div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center relative overflow-hidden">
+                            <div class="absolute top-4 right-4 w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-3 border-4 border-white shadow-sm overflow-hidden"><img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carlos" class="w-full"></div>
+                            <h3 class="text-lg font-bold text-gray-800">Carlos M.</h3>
+                            <p class="text-xs text-gray-500 mb-4"><i class="fa-solid fa-phone mr-1"></i> 669 987 6543</p>
+                            <div class="bg-blue-50 text-[#001b71] py-2 px-4 rounded-xl text-xs font-bold"><i class="fa-solid fa-motorcycle mr-2"></i> Italika FT150 (XYZ-123)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="vista-clientes" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
+                    <div class="mb-6 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-800">Base de Clientes</h2>
+                            <p class="text-gray-500 text-sm mt-1">Directorio de compradores de PASSA Agroservicios.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead class="bg-gray-50 text-gray-700 uppercase font-bold text-xs border-b border-gray-100">
+                                <tr>
+                                    <th class="px-6 py-4">Nombre Completo</th>
+                                    <th class="px-6 py-4">Teléfono</th>
+                                    <th class="px-6 py-4">Email</th>
+                                    <th class="px-6 py-4">Dirección Principal</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold text-gray-800">Ana Lizárraga</td>
+                                    <td class="px-6 py-4 text-xs"><i class="fa-solid fa-phone text-gray-400 mr-1"></i> 669 111 2233</td>
+                                    <td class="px-6 py-4">ana.liz@email.com</td>
+                                    <td class="px-6 py-4 text-xs">Av. Sábalo Cerritos, Mzt</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold text-gray-800">Roberto Gómez</td>
+                                    <td class="px-6 py-4 text-xs"><i class="fa-solid fa-phone text-gray-400 mr-1"></i> 669 444 5566</td>
+                                    <td class="px-6 py-4">roberto.g@email.com</td>
+                                    <td class="px-6 py-4 text-xs">Juan Carrasco 89, Centro</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Inicializar Mapa
+        const mapAdmin = L.map('mapa-admin').setView([23.2329, -106.4062], 12);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(mapAdmin);
+
+        const motoIcon = L.divIcon({ html: `<div class="bg-[#001b71] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg border-2 border-white"><i class="fa-solid fa-motorcycle text-xs"></i></div>`, className: 'custom-pin', iconSize: [32, 32], iconAnchor: [16, 16] });
+        const casaIcon = L.divIcon({ html: `<div class="bg-[#6b9e1a] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg border-2 border-white"><i class="fa-solid fa-house text-xs"></i></div>`, className: 'custom-pin', iconSize: [32, 32], iconAnchor: [16, 16] });
+
+        L.marker([23.2494, -106.4111], {icon: motoIcon}).addTo(mapAdmin);
+        L.marker([23.2844, -106.4633], {icon: casaIcon}).addTo(mapAdmin);
+
+
+        // ==========================================
+        // LÓGICA DE PESTAÑAS (SPA)
+        // ==========================================
+        const vistas = ['dashboard', 'pedidos', 'repartidores', 'clientes'];
+
+        function cambiarVista(vistaDestino) {
+            vistas.forEach(vista => {
+                const contenedor = document.getElementById(`vista-${vista}`);
+                const botonNav = document.getElementById(`nav-${vista}`);
+
+                // Clases Tailwind para el botón ACTIVO
+                const claseActivo = 'bg-[#001b71]/10 text-[#001b71] font-bold border-[#001b71]/10'.split(' ');
+                // Clases Tailwind para el botón INACTIVO
+                const claseInactivo = 'text-gray-500 hover:bg-gray-50 hover:text-[#001b71] font-semibold border-transparent'.split(' ');
+
+                if (vista === vistaDestino) {
+                    // Mostrar contenedor
+                    contenedor.classList.remove('hidden');
+                    contenedor.classList.add('block');
+                    
+                    // Pintar botón de azul
+                    botonNav.classList.remove(...claseInactivo);
+                    botonNav.classList.add(...claseActivo);
+                    
+                    // Si la vista es el dashboard, redibujar el mapa (soluciona un bug visual de Leaflet al ocultar/mostrar)
+                    if(vista === 'dashboard') {
+                        setTimeout(() => { mapAdmin.invalidateSize(); }, 10);
+                    }
+                } else {
+                    // Ocultar contenedor
+                    contenedor.classList.remove('block');
+                    contenedor.classList.add('hidden');
+                    
+                    // Pintar botón de gris
+                    botonNav.classList.remove(...claseActivo);
+                    botonNav.classList.add(...claseInactivo);
+                }
+            });
+        }
+
+        function perfilAdmin() {
+            window.location.href = 'admin_perfil.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App Repartidor - Mapa y Evidencia</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        #mapa { z-index: 1; }
+        .flotante { z-index: 10; }
+        /* Animación suave para la ventana de evidencia */
+        .slide-up { animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans overflow-hidden">
+
+    <div class="relative h-screen w-full flex flex-col justify-between max-w-md mx-auto shadow-2xl bg-white">
+        
+        <div class="flotante absolute top-0 w-full p-4 flex justify-between items-center pointer-events-none">
+            <a href="lista_pedidos.html" class="bg-white/90 backdrop-blur-md w-12 h-12 flex justify-center items-center rounded-full shadow-md text-gray-800 pointer-events-auto hover:bg-gray-100 active:scale-90 transition-all duration-200">
+                <i class="fa-solid fa-chevron-left text-xl pr-1"></i>
+            </a>
+            <div class="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-md font-bold text-gray-800 pointer-events-auto">
+                <i class="fa-solid fa-motorcycle text-blue-600 mr-2"></i> En Ruta
+            </div>
+            <button class="bg-white/90 backdrop-blur-md w-12 h-12 flex justify-center items-center rounded-full shadow-md text-gray-700 pointer-events-auto hover:bg-gray-100 active:scale-90 transition-all duration-200">
+                <i class="fa-solid fa-headset text-xl"></i>
+            </button>
+        </div>
+
+        <div id="mapa" class="absolute inset-0 w-full h-full"></div>
+
+        <div class="flotante w-full mt-auto bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] p-6 pb-8">
+            <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-5"></div>
+
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Entrega #1024</p>
+                    <h2 class="text-2xl font-bold text-gray-800">Ana Lizárraga</h2>
+                    <p class="text-gray-500 text-sm mt-1">
+                        <i class="fa-solid fa-location-dot text-gray-400 mr-1"></i> 
+                        Av. Sábalo Cerritos, Mazatlán
+                    </p>
+                </div>
+                <button class="bg-green-100 text-green-600 h-12 w-12 rounded-full flex justify-center items-center shadow-sm hover:bg-green-200 transition">
+                    <i class="fa-solid fa-phone text-lg"></i>
+                </button>
+            </div>
+
+            <button 
+                onclick="abrirEvidencia()"
+                class="w-full text-white bg-blue-600 hover:bg-blue-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-blue-500/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98]">
+                <i class="fa-solid fa-location-crosshairs text-xl mr-2"></i> Validar Ubicación
+            </button>
+        </div>
+
+        <div id="modal-evidencia" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end backdrop-blur-sm transition-opacity">
+            
+            <div class="bg-white w-full max-w-md mx-auto rounded-t-[2rem] p-6 pb-8 slide-up">
+                
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-xl font-bold text-gray-800">Evidencia de Entrega</h3>
+                    <button onclick="cerrarEvidencia()" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-xl p-3 mb-5 flex items-center">
+                    <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex justify-center items-center mr-3 flex-shrink-0">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <p class="text-xs text-green-800 font-medium">Ubicación GPS validada a 12 metros del destino.</p>
+                </div>
+
+                <p class="text-sm text-gray-500 font-semibold mb-2">1. Fotografía (Obligatoria)</p>
+                
+                <label class="border-2 border-dashed border-gray-300 rounded-2xl h-32 flex flex-col justify-center items-center text-gray-500 mb-5 cursor-pointer hover:bg-gray-50 transition bg-gray-50/50">
+                    <i class="fa-solid fa-camera text-3xl mb-2 text-blue-500"></i>
+                    <span class="text-sm font-bold">Tocar para tomar foto</span>
+                    <input type="file" accept="image/*" capture="environment" class="hidden">
+                </label>
+
+                <p class="text-sm text-gray-500 font-semibold mb-2">2. Notas adicionales (Opcional)</p>
+                <textarea rows="2" class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition mb-6" placeholder="Ej. Se dejó en recepción con el guardia de turno..."></textarea>
+
+                <button onclick="finalizarEntrega()" class="w-full text-white bg-green-600 hover:bg-green-700 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-green-600/30 transition-all duration-300 flex justify-center items-center text-lg active:scale-[0.98]">
+                    <i class="fa-solid fa-paper-plane mr-2"></i> Enviar y Finalizar
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 1. Inicializar el mapa
+        const mapa = L.map('mapa', { zoomControl: false }).setView([23.2844, -106.4633], 15);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(mapa);
+
+        // Pin personalizado
+        const customIcon = L.divIcon({
+            html: `<div class="bg-gray-800 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-xl border-2 border-white"><i class="fa-solid fa-house"></i></div>`,
+            className: 'custom-pin',
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+        L.marker([23.2844, -106.4633], {icon: customIcon}).addTo(mapa);
+
+        // 2. Funciones para la Ventana Flotante de Evidencia
+        const modalEvidencia = document.getElementById('modal-evidencia');
+
+        function abrirEvidencia() {
+            // Simulamos que primero validamos el GPS y luego mostramos la pantalla
+            // Quitamos la clase "hidden" para mostrar el fondo negro transparente
+            modalEvidencia.classList.remove('hidden');
+            // Le damos "flex" para que el contenido se alinee abajo
+            modalEvidencia.classList.add('flex');
+        }
+
+        function cerrarEvidencia() {
+            // Volvemos a ocultar el modal
+            modalEvidencia.classList.add('hidden');
+            modalEvidencia.classList.remove('flex');
+        }
+
+        function finalizarEntrega() {
+            // Aquí iría el código real para enviar la foto, la nota y el GPS a tu PHP
+            alert("¡Evidencia enviada! Regresando a la lista de pedidos...");
+            // Redirigir a la lista
+            window.location.href = 'lista_pedidos.html';
+        }
+    </script>
+</body>
+</html>
