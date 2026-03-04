@@ -17,7 +17,7 @@
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
             
             <div class="h-20 flex items-center justify-center border-b border-gray-100 px-6">
-                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-10 object-contain drop-shadow-sm">
+                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-20 object-contain drop-shadow-sm">
             </div>
 
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
@@ -38,15 +38,15 @@
                 <button id="nav-clientes" onclick="cambiarVista('clientes')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
                     <i class="fa-solid fa-users w-5 text-center"></i> Clientes
                 </button>
-
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-6">Administración</p>
+<!-- TODO: Pestañas de Administracion  pendientes-->
+                <!--p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-6">Administración</p>
                 
                 <button class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
                     <i class="fa-solid fa-file-invoice w-5 text-center"></i> Reportes
                 </button>
                 <button class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
                     <i class="fa-solid fa-gear w-5 text-center"></i> Configuración
-                </button>
+                </button-->
             </nav>
 
             <div class="p-4 border-t border-gray-100">
@@ -70,9 +70,10 @@
                     <input type="text" placeholder="Buscar..." class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#6b9e1a] focus:ring-1 focus:ring-[#6b9e1a] transition-all">
                 </div>
                 <div class="flex items-center gap-4">
-                    <button class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 flex items-center justify-center transition border border-gray-200 relative">
+<!-- TODO: Boton de notificaciones pendiente -->
+                    <!--button class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 flex items-center justify-center transition border border-gray-200 relative">
                         <i class="fa-regular fa-bell"></i><span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
-                    </button>
+                    </button-->
                     <button class="bg-[#6b9e1a] hover:bg-[#5a8516] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-[#6b9e1a]/30 transition-all flex items-center gap-2 active:scale-95">
                         <i class="fa-solid fa-plus"></i> Nuevo Pedido
                     </button>
@@ -80,7 +81,7 @@
             </header>
 
             <main class="flex-1 overflow-y-auto p-8 relative">
-                
+                <!-- Pestaña de Dashboard -->
                 <div id="vista-dashboard" class="block animate-[fadeIn_0.3s_ease-in-out]">
                     <div class="mb-8">
                         <h2 class="text-2xl font-bold text-gray-800">Resumen Operativo</h2>
@@ -136,6 +137,7 @@
                     </div>
                 </div>
 
+                <!-- Pestaña de Pedidos -->
                 <div id="vista-pedidos" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
                     <div class="mb-6 flex justify-between items-end">
                         <div>
@@ -179,6 +181,7 @@
                     </div>
                 </div>
 
+                 <!-- Pestaña de Repartidores -->
                 <div id="vista-repartidores" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
                     <div class="mb-6 flex justify-between items-end">
                         <div>
@@ -206,12 +209,14 @@
                     </div>
                 </div>
 
+                <!-- Pestaña de Clientes -->
                 <div id="vista-clientes" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
                     <div class="mb-6 flex justify-between items-end">
                         <div>
                             <h2 class="text-2xl font-bold text-gray-800">Base de Clientes</h2>
                             <p class="text-gray-500 text-sm mt-1">Directorio de compradores de PASSA Agroservicios.</p>
                         </div>
+                        <button class="bg-[#001b71] text-white px-4 py-2 rounded-xl font-bold text-sm shadow-md hover:bg-[#001250]"><i class="fa-solid fa-user-plus mr-2"></i> Agregar Cliente</button>
                     </div>
 
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
