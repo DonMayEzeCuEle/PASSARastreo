@@ -14,29 +14,32 @@
 
     <div class="flex h-screen w-full">
 
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20">
+        <aside id="sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30 transition-all duration-300 overflow-x-hidden">
             
-            <div class="h-20 flex items-center justify-center border-b border-gray-100 px-6">
-                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-20 object-contain drop-shadow-sm">
+            <div id="sidebar-header" class="h-20 flex items-center justify-between border-b border-gray-100 px-4">
+                <img src="https://passa.com.mx/imagenes/logo.jpg" alt="Logo PASSA" class="h-16 object-contain drop-shadow-sm nav-text">
+                <button onclick="toggleSidebar()" class="text-gray-500 hover:text-[#001b71] w-10 h-10 rounded-xl flex items-center justify-center transition-all active:scale-95" title="Colapsar/Expandir Menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
 
             <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-2">Principal</p>
+                <p class="nav-text text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-2 whitespace-nowrap">Principal</p>
                 
-                <button id="nav-dashboard" onclick="cambiarVista('dashboard')" class="w-full flex items-center gap-3 bg-[#001b71]/10 text-[#001b71] px-4 py-3 rounded-xl font-bold transition-colors border border-[#001b71]/10">
-                    <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
+                <button id="nav-dashboard" onclick="cambiarVista('dashboard')" title="Dashboard" class="w-full flex items-center gap-3 bg-[#001b71]/10 text-[#001b71] px-4 py-3 rounded-xl font-bold transition-colors border border-[#001b71]/10">
+                    <i class="fa-solid fa-chart-pie w-5 text-center flex-shrink-0"></i> <span class="nav-text whitespace-nowrap">Dashboard</span>
                 </button>
                 
-                <button id="nav-pedidos" onclick="cambiarVista('pedidos')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
-                    <i class="fa-solid fa-box w-5 text-center"></i> Pedidos
+                <button id="nav-pedidos" onclick="cambiarVista('pedidos')" title="Pedidos" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-box w-5 text-center flex-shrink-0"></i> <span class="nav-text whitespace-nowrap">Pedidos</span>
                 </button>
                 
-                <button id="nav-repartidores" onclick="cambiarVista('repartidores')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
-                    <i class="fa-solid fa-motorcycle w-5 text-center"></i> Repartidores
+                <button id="nav-repartidores" onclick="cambiarVista('repartidores')" title="Repartidores" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-motorcycle w-5 text-center flex-shrink-0"></i> <span class="nav-text whitespace-nowrap">Repartidores</span>
                 </button>
                 
-                <button id="nav-clientes" onclick="cambiarVista('clientes')" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
-                    <i class="fa-solid fa-users w-5 text-center"></i> Clientes
+                <button id="nav-clientes" onclick="cambiarVista('clientes')" title="Clientes" class="w-full flex items-center gap-3 text-gray-500 hover:bg-gray-50 hover:text-[#001b71] px-4 py-3 rounded-xl font-semibold transition-colors border border-transparent">
+                    <i class="fa-solid fa-users w-5 text-center flex-shrink-0"></i> <span class="nav-text whitespace-nowrap">Clientes</span>
                 </button>
 <!-- TODO: Pestañas de Administracion  pendientes-->
                 <!--p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 ml-2 mt-6">Administración</p>
@@ -50,9 +53,9 @@
             </nav>
 
             <div class="p-4 border-t border-gray-100">
-                <div class="flex items-center gap-3 px-2 py-2 cursor-pointer hover:bg-gray-50 rounded-xl transition" onclick="perfilAdmin()">
-                    <div class="w-10 h-10 rounded-full bg-[#001b71] text-white flex items-center justify-center font-bold shadow-sm">AD</div>
-                    <div class="text-left">
+                <div class="flex items-center gap-3 px-2 py-2 cursor-pointer hover:bg-gray-50 rounded-xl transition w-full overflow-hidden" onclick="perfilAdmin()" title="Admin PASSA">
+                    <div class="w-10 h-10 rounded-full bg-[#001b71] text-white flex items-center justify-center font-bold shadow-sm flex-shrink-0">AD</div>
+                    <div class="text-left nav-text whitespace-nowrap transition-opacity duration-300">
                         <p class="text-sm font-bold text-gray-800">Admin PASSA</p>
                         <p class="text-xs text-gray-500">Gerencia Logística</p>
                     </div>
@@ -63,13 +66,13 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             
             <header class="h-20 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center justify-between px-8 z-10">
-                <div class="relative w-96">
+                <div class="relative w-full max-w-md">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                     </div>
                     <input type="text" placeholder="Buscar..." class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#6b9e1a] focus:ring-1 focus:ring-[#6b9e1a] transition-all">
                 </div>
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 flex-shrink-0">
 <!-- TODO: Boton de notificaciones pendiente -->
                     <!--button class="w-10 h-10 rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 flex items-center justify-center transition border border-gray-200 relative">
                         <i class="fa-regular fa-bell"></i><span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
@@ -306,6 +309,30 @@
 
         function perfilAdmin() {
             window.location.href = 'admin_perfil.html';
+        }
+
+        // ==========================================
+        // COLAPSAR MENÚ LATERAL
+        // ==========================================
+        let isCollapsed = false;
+        function toggleSidebar() {
+            isCollapsed = !isCollapsed;
+            const sidebar = document.getElementById('sidebar');
+            const sidebarHeader = document.getElementById('sidebar-header');
+            const navTexts = document.querySelectorAll('.nav-text');
+            
+            if(isCollapsed) {
+                sidebar.classList.replace('w-64', 'w-20');
+                sidebarHeader.classList.replace('justify-between', 'justify-center');
+                navTexts.forEach(el => el.classList.add('hidden'));
+            } else {
+                sidebar.classList.replace('w-20', 'w-64');
+                sidebarHeader.classList.replace('justify-center', 'justify-between');
+                navTexts.forEach(el => el.classList.remove('hidden'));
+            }
+            
+            // Importante: Refrescar el tamaño del mapa de Leaflet después de la animación de CSS (300ms)
+            setTimeout(() => { mapAdmin.invalidateSize(); }, 300);
         }
     </script>
 </body>
